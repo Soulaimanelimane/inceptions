@@ -3,29 +3,33 @@ services:
         container_name : nginx
         build: ./srcs/requirement/nginix
         ports:
-            - "443"
+            - "443:443"
         depends_on:
             - wordpress
+        volumes :
+            - wp_vol:/var/www/html/wordpress
         networks:
             - inception
     wordpress:
         container_name : wordpress
         build : ./srcs/requirement/wordpress
-        ports :
-            - "9000"
+        ports:
+            - "9000:9000"
         depends_on:
             - mariadb
         volumes :
-            - wp_vol:/home/slimane/data/wp
+            - wp_vol:/var/www/html/wordpress
         networks:
             - inception
     mariadb :
         container_name : mariadb
         build : ./srcs/requirement/mariadb
-        ports :
+        ports:
             - "3306"
         volumes :
-            - db_vol:/home/slimane/data/db
+            - db_vol:/var/lib/mysql
+        env_file:
+            - .env
         networks:
             - inception
 networks:
@@ -33,6 +37,11 @@ networks:
         driver: bridge
 volumes :
     db_vol:
+        driver: local 
+        driver_opts:
+            type: none
+            o: bind   
+            device: /home/slimane/data/db
     wp_vol:
         driver: local 
         driver_opts:
