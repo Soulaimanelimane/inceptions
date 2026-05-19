@@ -17,4 +17,4 @@ mysql -e "CREATE USER IF NOT EXISTS 'isemg'@'%' IDENTIFIED BY 'isemg-1337';"
 mysql -e "GRANT SELECT, INSERT, UPDATE, DELETE   ON wordpress.* TO 'isemg'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
 
-wait 
+exec "$@"
