@@ -10,6 +10,8 @@ services:
             - wp_vol:/var/www/html/wordpress
         networks:
             - inception
+        env_file:
+            - path : srcs/.env
     wordpress:
         container_name : wordpress
         build : ./srcs/requirement/wordpress
@@ -21,6 +23,8 @@ services:
             - wp_vol:/var/www/html/wordpress
         networks:
             - inception
+        env_file:
+            - path : srcs/.env
     mariadb :
         container_name : mariadb
         build : ./srcs/requirement/mariadb
@@ -29,7 +33,7 @@ services:
         volumes :
             - db_vol:/var/lib/mysql
         env_file:
-            - .env
+            - path : srcs/.env
         networks:
             - inception
 networks:
