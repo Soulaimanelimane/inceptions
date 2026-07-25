@@ -36,6 +36,7 @@ services:
             - path : srcs/.env
         networks:
             - inception
+
 networks:
     inception:
         driver: bridge

@@ -16,4 +16,7 @@ RUN openssl req -x509 \
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./file.sh /file.sh
+RUN chmod +x /file.sh
+
+ENTRYPOINT ["/file.sh"]
