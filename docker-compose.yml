@@ -12,6 +12,7 @@ services:
             - inception
         env_file:
             - path : srcs/.env
+        restart: on-failure
     wordpress:
         container_name : wordpress
         build : ./srcs/requirement/wordpress
@@ -25,6 +26,7 @@ services:
             - inception
         env_file:
             - path : srcs/.env
+        restart: on-failure
     mariadb :
         container_name : mariadb
         build : ./srcs/requirement/mariadb
@@ -36,6 +38,7 @@ services:
             - path : srcs/.env
         networks:
             - inception
+        restart: on-failure
 
 networks:
     inception:

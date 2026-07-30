@@ -4,102 +4,65 @@
 #include <cmath>
 #include <algorithm>
 
+using namespace std ;
 
-void get_pos(int &x, int &y, char c,  std::vector<std::string> &arr)
-{
-    for (size_t i = 0; i < arr.size(); i++)
+
+class Solution {
+public:
+    size_t ft_handel(size_t l , size_t r, vector<int>& hei)
     {
-        size_t j = 0;
-        for (j ; j < arr[i].size(); j++)
-        {
-            if (arr[i][j] == tolower(c))
+        if (l > hei.size() || r > hei.size())
+            exit(0);
+        size_t res = 0;
+        for (size_t i = l+1 ; i < r ; i++)
+            res += hei[i];
+        return res;
+    }
+    int trap(vector<int>& hei) {
+       size_t l = 0; 
+       size_t r = l + 1;
+       size_t vm = 0;
+       for (size_t i = 0; i < hei.size(); i++)
+       {
+            if ((l > hei.size() || r > hei.size()))
                 break;
-        }
-        if ( j !=  arr[i].size())
-        {
-            x = j+1  , y = i;
-            break;
-        }
-    }
-    
-}
+            if (l < hei.size() && hei[l] == 0)
+                l++;
+            if (l == r)
+               r++;
+            while (r < hei.size() && hei[r] < hei[l])
+                r++;
 
-long long get_min_dist_sq(int x, int y, std::vector<std::pair<int, int>>& pos)
-{
-    // If no shift keys exist, return a special value
-    if (pos.empty()) return -1;
-
-    long long min_dist_sq = -1;
-
-    for (size_t i = 0; i < pos.size(); i++)
-    {
-        // Using long long to prevent overflow during multiplication
-        long long dx = (long long)x - pos[i].first;
-        long long dy = (long long)y - pos[i].second;
-        long long current_dist_sq = dx * dx + dy * dy;
-
-        if (min_dist_sq == -1 || current_dist_sq < min_dist_sq)
-        {
-            min_dist_sq = current_dist_sq;
-        }
-    }
-
-    return min_dist_sq;
-}
-
-int main()
-{
-    int n,m , lim;
-    std::cin >> n >> m >> lim ;
-
-    std::vector<std::string> arr;
-    arr.resize(n);
-    for (size_t i = 0; i < n; i++)
-        std::cin >> arr[i];
-
-    std::string str;
-    size_t q;
-    std::cin >> q >> str;
-    int x = -1, y = -1;
-    std::vector<std::pair<int , int> > pos;
-    for (size_t i = 0; i < n; i++)
-    {
-        size_t loc = arr[i].find('S');
-
-        if (loc != std::string::npos)
-        {
-            pos.push_back({loc, i});
-        }
-    }
-    long long count = 0 ;
-    long long lim_sq = (long long)lim * lim;
-    for (size_t i = 0; i < q; i++)
-    {
-        if (isupper(str[i]))
-        {
-            get_pos(x, y, str[i], arr);
-            x--; 
             
-            long long min_sq = get_min_dist_sq(x, y, pos);
-            
-            if (min_sq == -1)
+            if ((l < hei.size() && r < hei.size()))
             {
-                std::cout << -1 << std::endl;
-                return 0;
+                vm += (((r - l )- 1) *  min(hei[l], hei[r])) ;
+                vm -= ft_handel(l , r, hei);
+                l = r ;
+                r++;
+                if (r >= hei.size() || l >= hei.size())
+                    return vm;
             }
-            
-            if (min_sq > lim_sq) {
-                count++;
+            else
+            {
+                l++;
+                r = l + 1;
             }
-        }
+
+            // cout << l << "  " << r << endl;
+
+       } 
+       return vm;
     }
-    if (count == 0)
-        std::cout << -1 << std::endl;
-    else
-        std::cout << count << std::endl;
+};
+
+
+int main() {
+    Solution sol;
+
+    vector<int> height = {4,2,3};
+
+    cout  << sol.trap(height) << endl;
+
+    return 0;
 }
-/*
-
-
-
-*/
